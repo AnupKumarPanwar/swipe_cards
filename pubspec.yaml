@@ -1,8 +1,7 @@
 name: swipe_cards
 description: Tinder like swipe cards.
 version: 0.0.1
-author: Anup Kumar Panwar
-homepage:
+homepage: https://github.com/AnupKumarPanwar/swipe_cards
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

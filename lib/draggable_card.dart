@@ -3,8 +3,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'center_about.dart';
-
 enum SlideDirection { left, right, up }
 enum SlideRegion { inNopeRegion, inLikeRegion, inSuperLikeRegion }
 
@@ -42,6 +40,12 @@ class _DraggableCardState extends State<DraggableCard>
   AnimationController slideBackAnimation;
   Tween<Offset> slideOutTween;
   AnimationController slideOutAnimation;
+
+  RenderBox box;
+  var topLeft, bottomRight;
+  Rect anchorBounds;
+
+  bool isAnchorInitialized = false;
 
   @override
   void initState() {
@@ -272,33 +276,37 @@ class _DraggableCardState extends State<DraggableCard>
 
   @override
   Widget build(BuildContext context) {
-    RenderBox box = context.findRenderObject() as RenderBox;
-    final Rect anchorBounds = Rect.fromLTRB(
-      0,
-      0,
-      200,
-      200,
-    );
+    if (!isAnchorInitialized) {
+      box = context.findRenderObject() as RenderBox;
+      topLeft = box.size.topLeft(box.localToGlobal(const Offset(0.0, 0.0)));
+      bottomRight =
+          box.size.bottomRight(box.localToGlobal(const Offset(0.0, 0.0)));
+      anchorBounds = new Rect.fromLTRB(
+        topLeft.dx,
+        topLeft.dy,
+        bottomRight.dx,
+        bottomRight.dy,
+      );
 
-    final anchor = box.size.center(Offset.zero);
+      setState(() {
+        isAnchorInitialized = true;
+      });
+    }
 
-    return CenterAbout(
-      position: anchor,
-      child: Transform(
-        transform: Matrix4.translationValues(cardOffset.dx, cardOffset.dy, 0.0)
-          ..rotateZ(_rotation(anchorBounds)),
-        origin: _rotationOrigin(anchorBounds),
-        child: Container(
-          key: profileCardKey,
-          width: anchorBounds.width,
-          height: anchorBounds.height,
-          padding: const EdgeInsets.all(16.0),
-          child: GestureDetector(
-            onPanStart: _onPanStart,
-            onPanUpdate: _onPanUpdate,
-            onPanEnd: _onPanEnd,
-            child: widget.card,
-          ),
+    return Transform(
+      transform: Matrix4.translationValues(cardOffset.dx, cardOffset.dy, 0.0)
+        ..rotateZ(_rotation(anchorBounds)),
+      origin: _rotationOrigin(anchorBounds),
+      child: Container(
+        key: profileCardKey,
+        width: anchorBounds.width,
+        height: anchorBounds.height,
+        padding: const EdgeInsets.all(16.0),
+        child: GestureDetector(
+          onPanStart: _onPanStart,
+          onPanUpdate: _onPanUpdate,
+          onPanEnd: _onPanEnd,
+          child: widget.card,
         ),
       ),
     );

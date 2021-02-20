@@ -29,12 +29,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<String> data = ['hello 1', 'hello 2', 'hello 3', 'hello 4', 'hello 1', 'hello 2', 'hello 3', 'hello 4' ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: SwipeCards());
+        body: SwipeCards(
+            itemCount: data.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                child: Text(data[index]),
+              );
+            }));
   }
 }

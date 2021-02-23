@@ -7,15 +7,10 @@ import 'package:swipe_cards/profile_card.dart';
 class SwipeCards extends StatefulWidget {
   final IndexedWidgetBuilder itemBuilder;
   final MatchEngine matchEngine;
-  final bool unlimitedSwipes;
-  final Function fetchCards;
+  final Function onStackFinished;
 
   const SwipeCards(
-      {Key key,
-      this.matchEngine,
-      this.unlimitedSwipes,
-      this.fetchCards,
-      this.itemBuilder})
+      {Key key, this.matchEngine, this.onStackFinished, this.itemBuilder})
       : super(key: key);
 
   @override
@@ -126,7 +121,7 @@ class _SwipeCardsState extends State<SwipeCards> {
 
     widget.matchEngine.cycleMatch();
     if (widget.matchEngine.currentItem == null) {
-      widget.fetchCards();
+      widget.onStackFinished();
     }
   }
 
@@ -206,14 +201,20 @@ class MatchEngine extends ChangeNotifier {
 
 class SwipeItem extends ChangeNotifier {
   final dynamic content;
+  final Function likeAction;
+  final Function superlikeAction;
+  final Function nopeAction;
   Decision decision = Decision.undecided;
 
-  SwipeItem({this.content});
+  SwipeItem(
+      {this.content, this.likeAction, this.superlikeAction, this.nopeAction});
 
   void like() {
     if (decision == Decision.undecided) {
       decision = Decision.like;
-      try {} catch (e) {}
+      try {
+        likeAction();
+      } catch (e) {}
       notifyListeners();
     }
   }
@@ -221,7 +222,9 @@ class SwipeItem extends ChangeNotifier {
   void nope() {
     if (decision == Decision.undecided) {
       decision = Decision.nope;
-      try {} catch (e) {}
+      try {
+        nopeAction();
+      } catch (e) {}
       notifyListeners();
     }
   }
@@ -229,7 +232,9 @@ class SwipeItem extends ChangeNotifier {
   void superLike() {
     if (decision == Decision.undecided) {
       decision = Decision.superLike;
-      try {} catch (e) {}
+      try {
+        superlikeAction();
+      } catch (e) {}
       notifyListeners();
     }
   }

@@ -10,7 +10,6 @@ class DraggableCard extends StatefulWidget {
   final Widget card;
   final bool isDraggable;
   final SlideDirection slideTo;
-  final SlideRegion slideRegion;
   final Function(double distance) onSlideUpdate;
   final Function(SlideRegion slideRegion) onSlideRegionUpdate;
   final Function(SlideDirection direction) onSlideOutComplete;
@@ -21,7 +20,6 @@ class DraggableCard extends StatefulWidget {
       this.onSlideUpdate,
       this.onSlideOutComplete,
       this.slideTo,
-      this.slideRegion,
       this.onSlideRegionUpdate});
 
   @override

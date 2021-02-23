@@ -29,7 +29,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<String> data = ['hello 1', 'hello 2', 'hello 3', 'hello 4', 'hello 1', 'hello 2', 'hello 3', 'hello 4' ];
+  List<DateMatch> data = List<DateMatch>();
+  MatchEngine _matchEngine;
+
+  @override
+  void initState() {
+    data.add(DateMatch(profile: "1"));
+    data.add(DateMatch(profile: "2"));
+    data.add(DateMatch(profile: "3"));
+    data.add(DateMatch(profile: "4"));
+    data.add(DateMatch(profile: "5"));
+
+    _matchEngine = MatchEngine(matches: data);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +51,10 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: SwipeCards(
-            itemCount: data.length,
+            matchEngine: _matchEngine,
             itemBuilder: (BuildContext context, int index) {
               return Container(
-                child: Text(data[index]),
+                child: Text(data[index].profile),
               );
             }));
   }

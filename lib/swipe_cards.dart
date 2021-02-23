@@ -166,8 +166,8 @@ class MatchEngine extends ChangeNotifier {
   int _nextItemIndex;
 
   MatchEngine({
-    List<SwipeItem> matches,
-  }) : _swipeItems = matches {
+    List<SwipeItem> swipeItems,
+  }) : _swipeItems = swipeItems {
     _currentItemIndex = 0;
     _nextItemIndex = 1;
   }

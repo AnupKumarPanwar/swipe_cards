@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:example/content.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +17,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Swipe Cards Demo'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -50,7 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _swipeItems.add(SwipeItem(
           content: Content(text: _names[i], color: _colors[i]),
           likeAction: () {
-            log("like");
             _scaffoldKey.currentState.showSnackBar(SnackBar(
               content: Text("Liked ${_names[i]}"),
               duration: Duration(milliseconds: 500),
@@ -70,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
           }));
     }
 
-    _matchEngine = MatchEngine(matches: _swipeItems);
+    _matchEngine = MatchEngine(swipeItems: _swipeItems);
     super.initState();
   }
 
@@ -96,35 +95,35 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: TextStyle(fontSize: 100),
                   ),
                 );
+              },
+              onStackFinished: () {
+                _scaffoldKey.currentState.showSnackBar(SnackBar(
+                  content: Text("Stack Finished"),
+                  duration: Duration(milliseconds: 500),
+                ));
+              },
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              RaisedButton(
+                  onPressed: () {
+                    _matchEngine.currentItem.nope();
                   },
-                  onStackFinished: () {
-                    _scaffoldKey.currentState.showSnackBar(SnackBar(
-                      content: Text("Stack Finished"),
-                      duration: Duration(milliseconds: 500),
-                    ));
+                  child: Text("Nope")),
+              RaisedButton(
+                  onPressed: () {
+                    _matchEngine.currentItem.superLike();
                   },
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  RaisedButton(
-                      onPressed: () {
-                        _matchEngine.currentItem.nope();
-                      },
-                      child: Text("Nope")),
-                  RaisedButton(
-                      onPressed: () {
-                        _matchEngine.currentItem.superLike();
-                      },
-                      child: Text("Superlike")),
-                  RaisedButton(
-                      onPressed: () {
-                        _matchEngine.currentItem.like();
-                      },
-                      child: Text("Like"))
-                ],
-              )
-            ])));
+                  child: Text("Superlike")),
+              RaisedButton(
+                  onPressed: () {
+                    _matchEngine.currentItem.like();
+                  },
+                  child: Text("Like"))
+            ],
+          )
+        ])));
   }
 }

@@ -1,5 +1,5 @@
-import 'dart:math';
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -222,9 +222,9 @@ class _DraggableCardState extends State<DraggableCard>
   void _onPanEnd(DragEndDetails details) {
     final dragVector = cardOffset / cardOffset.distance;
 
-    final isInLeftRegion = (cardOffset.dx / context.size.width) < -0.45;
-    final isInRightRegion = (cardOffset.dx / context.size.width) > 0.45;
-    final isInTopRegion = (cardOffset.dy / context.size.height) < -0.40;
+    final isInLeftRegion = (cardOffset.dx / context.size.width) < -0.15;
+    final isInRightRegion = (cardOffset.dx / context.size.width) > 0.15;
+    final isInTopRegion = (cardOffset.dy / context.size.height) < -0.15;
 
     setState(() {
       if (isInLeftRegion || isInRightRegion) {
@@ -275,20 +275,7 @@ class _DraggableCardState extends State<DraggableCard>
   @override
   Widget build(BuildContext context) {
     if (!isAnchorInitialized) {
-      box = context.findRenderObject() as RenderBox;
-      topLeft = box.size.topLeft(box.localToGlobal(const Offset(0.0, 0.0)));
-      bottomRight =
-          box.size.bottomRight(box.localToGlobal(const Offset(0.0, 0.0)));
-      anchorBounds = new Rect.fromLTRB(
-        topLeft.dx,
-        topLeft.dy,
-        bottomRight.dx,
-        bottomRight.dy,
-      );
-
-      setState(() {
-        isAnchorInitialized = true;
-      });
+      _initAnchor();
     }
 
     return Transform(
@@ -308,5 +295,23 @@ class _DraggableCardState extends State<DraggableCard>
         ),
       ),
     );
+  }
+
+  _initAnchor() async {
+    await Future.delayed(Duration(milliseconds: 3));
+    box = context.findRenderObject() as RenderBox;
+    topLeft = box.size.topLeft(box.localToGlobal(const Offset(0.0, 0.0)));
+    bottomRight =
+        box.size.bottomRight(box.localToGlobal(const Offset(0.0, 0.0)));
+    anchorBounds = new Rect.fromLTRB(
+      topLeft.dx,
+      topLeft.dy,
+      bottomRight.dx,
+      bottomRight.dy,
+    );
+
+    setState(() {
+      isAnchorInitialized = true;
+    });
   }
 }

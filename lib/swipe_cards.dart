@@ -24,23 +24,23 @@ class SwipeCards extends StatefulWidget {
 
 class _SwipeCardsState extends State<SwipeCards> {
   Key _frontCard;
-  DateMatch _currentMatch;
+  SwipeItem _currentItem;
   double _nextCardScale = 0.9;
   SlideRegion slideRegion;
 
   @override
   void initState() {
     widget.matchEngine.addListener(_onMatchEngineChange);
-    _currentMatch = widget.matchEngine.currentMatch;
-    _currentMatch.addListener(_onMatchChange);
-    _frontCard = Key(_currentMatch.profile.toString());
+    _currentItem = widget.matchEngine.currentItem;
+    _currentItem.addListener(_onMatchChange);
+    _frontCard = Key(widget.matchEngine._currentItemIndex.toString());
     super.initState();
   }
 
   @override
   void dispose() {
-    if (_currentMatch != null) {
-      _currentMatch.removeListener(_onMatchChange);
+    if (_currentItem != null) {
+      _currentItem.removeListener(_onMatchChange);
     }
     widget.matchEngine.removeListener(_onMatchEngineChange);
     super.dispose();
@@ -53,25 +53,25 @@ class _SwipeCardsState extends State<SwipeCards> {
       oldWidget.matchEngine.removeListener(_onMatchEngineChange);
       widget.matchEngine.addListener(_onMatchEngineChange);
     }
-    if (_currentMatch != null) {
-      _currentMatch.removeListener(_onMatchChange);
+    if (_currentItem != null) {
+      _currentItem.removeListener(_onMatchChange);
     }
-    _currentMatch = widget.matchEngine.currentMatch;
-    if (_currentMatch != null) {
-      _currentMatch.addListener(_onMatchChange);
+    _currentItem = widget.matchEngine.currentItem;
+    if (_currentItem != null) {
+      _currentItem.addListener(_onMatchChange);
     }
   }
 
   void _onMatchEngineChange() {
     setState(() {
-      if (_currentMatch != null) {
-        _currentMatch.removeListener(_onMatchChange);
+      if (_currentItem != null) {
+        _currentItem.removeListener(_onMatchChange);
       }
-      _currentMatch = widget.matchEngine.currentMatch;
-      if (_currentMatch != null) {
-        _currentMatch.addListener(_onMatchChange);
+      _currentItem = widget.matchEngine.currentItem;
+      if (_currentItem != null) {
+        _currentItem.addListener(_onMatchChange);
       }
-      _frontCard = Key(_currentMatch.profile.toString());
+      _frontCard = Key(widget.matchEngine._currentItemIndex.toString());
     });
   }
 
@@ -83,7 +83,7 @@ class _SwipeCardsState extends State<SwipeCards> {
 
   Widget _buildFrontCard() {
     return ProfileCard(
-      child: widget.itemBuilder(context, widget.matchEngine._currentMatchIndex),
+      child: widget.itemBuilder(context, widget.matchEngine._currentItemIndex),
       key: _frontCard,
     );
   }
@@ -93,7 +93,7 @@ class _SwipeCardsState extends State<SwipeCards> {
       transform: Matrix4.identity()..scale(_nextCardScale, _nextCardScale),
       alignment: Alignment.center,
       child: ProfileCard(
-        child: widget.itemBuilder(context, widget.matchEngine._nextMatchIndex),
+        child: widget.itemBuilder(context, widget.matchEngine._nextItemIndex),
       ),
     );
   }
@@ -111,7 +111,7 @@ class _SwipeCardsState extends State<SwipeCards> {
   }
 
   void _onSlideOutComplete(SlideDirection direction) {
-    DateMatch currentMatch = widget.matchEngine.currentMatch;
+    SwipeItem currentMatch = widget.matchEngine.currentItem;
     switch (direction) {
       case SlideDirection.left:
         currentMatch.nope();
@@ -125,13 +125,13 @@ class _SwipeCardsState extends State<SwipeCards> {
     }
 
     widget.matchEngine.cycleMatch();
-    if (widget.matchEngine.currentMatch == null) {
+    if (widget.matchEngine.currentItem == null) {
       widget.fetchCards();
     }
   }
 
   SlideDirection _desiredSlideOutDirection() {
-    switch (widget.matchEngine.currentMatch.decision) {
+    switch (widget.matchEngine.currentItem.decision) {
       case Decision.nope:
         return SlideDirection.left;
       case Decision.like:
@@ -147,12 +147,12 @@ class _SwipeCardsState extends State<SwipeCards> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        if (widget.matchEngine.nextMatch != null)
+        if (widget.matchEngine.nextItem != null)
           DraggableCard(
             isDraggable: false,
             card: _buildBackCard(),
           ),
-        if (widget.matchEngine.currentMatch != null)
+        if (widget.matchEngine.currentItem != null)
           DraggableCard(
             card: _buildFrontCard(),
             slideTo: _desiredSlideOutDirection(),
@@ -166,49 +166,49 @@ class _SwipeCardsState extends State<SwipeCards> {
 }
 
 class MatchEngine extends ChangeNotifier {
-  final List<DateMatch> _matches;
-  int _currentMatchIndex;
-  int _nextMatchIndex;
+  final List<SwipeItem> _swipeItems;
+  int _currentItemIndex;
+  int _nextItemIndex;
 
   MatchEngine({
-    List<DateMatch> matches,
-  }) : _matches = matches {
-    _currentMatchIndex = 0;
-    _nextMatchIndex = 1;
+    List<SwipeItem> matches,
+  }) : _swipeItems = matches {
+    _currentItemIndex = 0;
+    _nextItemIndex = 1;
   }
 
-  DateMatch get currentMatch => _currentMatchIndex < _matches.length
-      ? _matches[_currentMatchIndex]
+  SwipeItem get currentItem => _currentItemIndex < _swipeItems.length
+      ? _swipeItems[_currentItemIndex]
       : null;
 
-  DateMatch get nextMatch =>
-      _nextMatchIndex < _matches.length ? _matches[_nextMatchIndex] : null;
+  SwipeItem get nextItem =>
+      _nextItemIndex < _swipeItems.length ? _swipeItems[_nextItemIndex] : null;
 
   void cycleMatch() {
-    if (currentMatch.decision != Decision.undecided) {
-      currentMatch.resetMatch();
-      _currentMatchIndex = _nextMatchIndex;
-      _nextMatchIndex = _nextMatchIndex + 1;
+    if (currentItem.decision != Decision.undecided) {
+      currentItem.resetMatch();
+      _currentItemIndex = _nextItemIndex;
+      _nextItemIndex = _nextItemIndex + 1;
       notifyListeners();
     }
   }
 
   void rewindMatch() {
-    if (_currentMatchIndex != 0) {
-      currentMatch.resetMatch();
-      _nextMatchIndex = _currentMatchIndex;
-      _currentMatchIndex = _currentMatchIndex - 1;
-      currentMatch.resetMatch();
+    if (_currentItemIndex != 0) {
+      currentItem.resetMatch();
+      _nextItemIndex = _currentItemIndex;
+      _currentItemIndex = _currentItemIndex - 1;
+      currentItem.resetMatch();
       notifyListeners();
     }
   }
 }
 
-class DateMatch extends ChangeNotifier {
-  final dynamic profile;
+class SwipeItem extends ChangeNotifier {
+  final dynamic content;
   Decision decision = Decision.undecided;
 
-  DateMatch({this.profile});
+  SwipeItem({this.content});
 
   void like() {
     if (decision == Decision.undecided) {

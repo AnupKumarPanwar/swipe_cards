@@ -1,3 +1,4 @@
+import 'package:example/content.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 
@@ -29,33 +30,75 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<DateMatch> data = List<DateMatch>();
+  List<SwipeItem> _swipeItems = List<SwipeItem>();
   MatchEngine _matchEngine;
+  GlobalKey<ScaffoldState> _scaffoldKey;
 
   @override
   void initState() {
-    data.add(DateMatch(profile: "1"));
-    data.add(DateMatch(profile: "2"));
-    data.add(DateMatch(profile: "3"));
-    data.add(DateMatch(profile: "4"));
-    data.add(DateMatch(profile: "5"));
+    _swipeItems.add(SwipeItem(content: Content(text: "1", color: Colors.red)));
+    _swipeItems.add(SwipeItem(content: Content(text: "2", color: Colors.blue)));
+    _swipeItems
+        .add(SwipeItem(content: Content(text: "3", color: Colors.green)));
+    _swipeItems
+        .add(SwipeItem(content: Content(text: "4", color: Colors.yellow)));
+    _swipeItems
+        .add(SwipeItem(content: Content(text: "5", color: Colors.orange)));
 
-    _matchEngine = MatchEngine(matches: data);
+    _matchEngine = MatchEngine(matches: _swipeItems);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: SwipeCards(
-            matchEngine: _matchEngine,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                child: Text(data[index].profile),
-              );
-            }));
+        body: Container(
+            child: Column(children: [
+          Container(
+            height: 400,
+            child: SwipeCards(
+                matchEngine: _matchEngine,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    alignment: Alignment.center,
+                    color: _swipeItems[index].content.color,
+                    child: Text(
+                      _swipeItems[index].content.text,
+                      style: TextStyle(fontSize: 100),
+                    ),
+                  );
+                }),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              RaisedButton(
+                  onPressed: () {
+                    _matchEngine.currentItem.nope();
+                  },
+                  child: Text("Nope")),
+              RaisedButton(
+                  onPressed: () {
+                    _matchEngine.currentItem.superLike();
+                  },
+                  child: Text("Superlike")),
+              RaisedButton(
+                  onPressed: () {
+                    _matchEngine.currentItem.like();
+                  },
+                  child: Text("Like"))
+            ],
+          )
+        ])));
+  }
+
+  _likeAction() {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text("Liked"),
+    ));
   }
 }

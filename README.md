@@ -9,7 +9,7 @@ A Flutter widget for Tinder like swipe cards. The card can be swiped right, left
 To install the package, add the following dependency to your `pubspec.yaml`
 ```
 dependencies:
-  swipe_cards: ^0.0.3
+  swipe_cards: ^0.0.4
 ```
 
 ## Usage
@@ -36,8 +36,16 @@ SwipeCards(
 `MatchEngine` is the controller for the swipe cards. It takes `swipeItems` as an argument and is used to trigger the swipes manually, for example on button press. The data type of `swipeItems` is `List<SwipeItem>`.
 
 ```
-MatchEngine(swipeItems: List<SwipeItem>);
+MatchEngine _matchEngine = MatchEngine(swipeItems: List<SwipeItem>);
 ```
+
+### Functions in MatchEngine
+| Key  				| Description   												   	|
+|-------------------|-------------------------------------------------------------------|
+| `_matchEngine.currentItem.like();` 	| To trigger right swipe manually.	|
+| `_matchEngine.currentItem.nope();`     |  To trigger left swipe manually.				    |
+| `_matchEngine.currentItem.superLike();` |  To trigger up swipe manually. 	|
+
 
 ### SwipeItem
 `SwipeItem` contains the actual data that can be rendered in the swipe card. Actually it is a wrapper over any dynamic object and just adds the functionality of like, nope and superlike to that object.

@@ -6,3 +6,6 @@
 
 ## [0.0.3] - 24 Feb 2021.
 * Resized demo gif
+
+## [0.0.4] - 24 Feb 2021.
+* Updated README to include commands for manual triggering of swipes.

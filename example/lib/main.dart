@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Swipe Cards Demo Home Page'),
+      home: MyHomePage(title: 'Swipe Cards Demo'),
     );
   }
 }
@@ -53,19 +53,19 @@ class _MyHomePageState extends State<MyHomePage> {
             log("like");
             _scaffoldKey.currentState.showSnackBar(SnackBar(
               content: Text("Liked ${_names[i]}"),
-              duration: Duration(milliseconds: 200),
+              duration: Duration(milliseconds: 500),
             ));
           },
           nopeAction: () {
             _scaffoldKey.currentState.showSnackBar(SnackBar(
               content: Text("Nope ${_names[i]}"),
-              duration: Duration(milliseconds: 200),
+              duration: Duration(milliseconds: 500),
             ));
           },
           superlikeAction: () {
             _scaffoldKey.currentState.showSnackBar(SnackBar(
               content: Text("Superliked ${_names[i]}"),
-              duration: Duration(milliseconds: 200),
+              duration: Duration(milliseconds: 500),
             ));
           }));
     }
@@ -83,8 +83,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Container(
             child: Column(children: [
-              Container(
-                height: 400,
+          Container(
+            height: 550,
             child: SwipeCards(
               matchEngine: _matchEngine,
               itemBuilder: (BuildContext context, int index) {
@@ -96,15 +96,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: TextStyle(fontSize: 100),
                   ),
                 );
-              },
-              onStackFinished: () {
-                _scaffoldKey.currentState.showSnackBar(SnackBar(
-                  content: Text("Stack Finished"),
-                  duration: Duration(milliseconds: 200),
-                ));
-              },
-            ),
-          ),
+                  },
+                  onStackFinished: () {
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      content: Text("Stack Finished"),
+                      duration: Duration(milliseconds: 500),
+                    ));
+                  },
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

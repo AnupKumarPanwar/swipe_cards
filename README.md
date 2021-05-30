@@ -170,6 +170,13 @@ List<SwipeItem> _swipeItems = List<SwipeItem>();
               )
             ])));
   }
+  
+  class Content {
+    final String text;
+    final Color color;
+
+    Content({this.text, this.color});
+  }
 ```
 
 ## Screenshot

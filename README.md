@@ -9,7 +9,7 @@ A Flutter widget for Tinder like swipe cards. The card can be swiped right, left
 To install the package, add the following dependency to your `pubspec.yaml`
 ```
 dependencies:
-  swipe_cards: ^0.0.4
+  swipe_cards: ^0.0.5
 ```
 
 ## Usage
@@ -170,7 +170,8 @@ List<SwipeItem> _swipeItems = List<SwipeItem>();
               )
             ])));
   }
-  
+```
+```
   class Content {
     final String text;
     final Color color;

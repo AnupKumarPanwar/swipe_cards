@@ -9,3 +9,6 @@
 
 ## [0.0.4] - 24 Feb 2021.
 * Updated README to include commands for manual triggering of swipes.
+
+## [0.0.5] - 30 May 2021.
+* Make `matchEngine`, `onStackFinished`, `onStackFinished` required fields.

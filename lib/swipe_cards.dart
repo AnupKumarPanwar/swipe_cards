@@ -10,7 +10,10 @@ class SwipeCards extends StatefulWidget {
   final Function onStackFinished;
 
   const SwipeCards(
-      {Key key, this.matchEngine, this.onStackFinished, this.itemBuilder})
+      {Key key,
+      @required this.matchEngine,
+      @required this.onStackFinished,
+      @required this.itemBuilder})
       : super(key: key);
 
   @override

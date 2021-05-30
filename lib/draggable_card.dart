@@ -284,8 +284,8 @@ class _DraggableCardState extends State<DraggableCard>
       origin: _rotationOrigin(anchorBounds),
       child: Container(
         key: profileCardKey,
-        width: anchorBounds.width,
-        height: anchorBounds.height,
+        width: anchorBounds?.width,
+        height: anchorBounds?.height,
         padding: const EdgeInsets.all(16.0),
         child: GestureDetector(
           onPanStart: _onPanStart,

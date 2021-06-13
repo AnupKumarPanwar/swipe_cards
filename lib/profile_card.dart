@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ProfileCard extends StatefulWidget {
-  final Widget child;
-  const ProfileCard({Key key, this.child}) : super(key: key);
+  final Widget? child;
+
+  const ProfileCard({Key? key, this.child}) : super(key: key);
 
   @override
   _ProfileCardState createState() => _ProfileCardState();

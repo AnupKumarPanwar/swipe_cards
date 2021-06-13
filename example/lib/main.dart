@@ -32,7 +32,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<SwipeItem> _swipeItems = List<SwipeItem>();
+  List<SwipeItem> _swipeItems = <SwipeItem>[];
   MatchEngine _matchEngine;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   List<String> _names = ["Red", "Blue", "Green", "Yellow", "Orange"];
@@ -107,19 +107,19 @@ class _MyHomePageState extends State<MyHomePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              RaisedButton(
+              ElevatedButton(
                   onPressed: () {
-                    _matchEngine.currentItem.nope();
+                    _matchEngine.currentItem?.nope();
                   },
                   child: Text("Nope")),
-              RaisedButton(
+              ElevatedButton(
                   onPressed: () {
-                    _matchEngine.currentItem.superLike();
+                    _matchEngine.currentItem?.superLike();
                   },
                   child: Text("Superlike")),
-              RaisedButton(
+              ElevatedButton(
                   onPressed: () {
-                    _matchEngine.currentItem.like();
+                    _matchEngine.currentItem?.like();
                   },
                   child: Text("Like"))
             ],

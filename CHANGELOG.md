@@ -12,3 +12,6 @@
 
 ## [0.0.5] - 30 May 2021.
 * Make `matchEngine`, `onStackFinished`, `onStackFinished` required fields.
+
+## [0.1.0] - 13 June 2021.
+* Migrated to null-safety.

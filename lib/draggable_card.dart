@@ -13,6 +13,8 @@ class DraggableCard extends StatefulWidget {
   final Function(double distance)? onSlideUpdate;
   final Function(SlideRegion? slideRegion)? onSlideRegionUpdate;
   final Function(SlideDirection? direction)? onSlideOutComplete;
+  final bool upSwipeAllowed;
+  final EdgeInsets padding;
 
   DraggableCard(
       {this.card,
@@ -20,7 +22,9 @@ class DraggableCard extends StatefulWidget {
       this.onSlideUpdate,
       this.onSlideOutComplete,
       this.slideTo,
-      this.onSlideRegionUpdate});
+      this.onSlideRegionUpdate,
+      this.upSwipeAllowed = true,
+      this.padding = EdgeInsets.zero});
 
   @override
   _DraggableCardState createState() => _DraggableCardState();
@@ -48,8 +52,6 @@ class _DraggableCardState extends State<DraggableCard>
   @override
   void initState() {
     super.initState();
-    print("draggable ${widget.isDraggable}");
-
     slideBackAnimation = AnimationController(
       duration: const Duration(milliseconds: 1000),
       vsync: this,
@@ -60,8 +62,6 @@ class _DraggableCardState extends State<DraggableCard>
               const Offset(0.0, 0.0),
               Curves.elasticOut.transform(slideBackAnimation.value),
             );
-
-            print("draggable ${widget.isDraggable}");
 
             if (null != widget.onSlideUpdate) {
               widget.onSlideUpdate!(cardOffset!.distance);
@@ -235,11 +235,16 @@ class _DraggableCardState extends State<DraggableCard>
         slideOutDirection =
             isInLeftRegion ? SlideDirection.left : SlideDirection.right;
       } else if (isInTopRegion) {
-        slideOutTween = Tween(
-            begin: cardOffset, end: dragVector * (2 * context.size!.height));
-        slideOutAnimation.forward(from: 0.0);
+        if (widget.upSwipeAllowed) {
+          slideOutTween = Tween(
+              begin: cardOffset, end: dragVector * (2 * context.size!.height));
+          slideOutAnimation.forward(from: 0.0);
 
-        slideOutDirection = SlideDirection.up;
+          slideOutDirection = SlideDirection.up;
+        } else {
+          slideBackStart = cardOffset;
+          slideBackAnimation.forward(from: 0.0);
+        }
       } else {
         slideBackStart = cardOffset;
         slideBackAnimation.forward(from: 0.0);
@@ -286,7 +291,7 @@ class _DraggableCardState extends State<DraggableCard>
         key: profileCardKey,
         width: anchorBounds?.width,
         height: anchorBounds?.height,
-        padding: const EdgeInsets.all(16.0),
+        padding: widget.padding,
         child: GestureDetector(
           onPanStart: _onPanStart,
           onPanUpdate: _onPanUpdate,

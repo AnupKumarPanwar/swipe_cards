@@ -1,5 +1,6 @@
 library swipe_cards;
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_cards/draggable_card.dart';
 import 'package:swipe_cards/profile_card.dart';
@@ -8,12 +9,18 @@ class SwipeCards extends StatefulWidget {
   final IndexedWidgetBuilder itemBuilder;
   final MatchEngine matchEngine;
   final Function onStackFinished;
+  final bool fillSpace;
+  final bool upSwipeAllowed;
+  final EdgeInsets padding;
 
   const SwipeCards(
       {Key? key,
       required this.matchEngine,
       required this.onStackFinished,
-      required this.itemBuilder})
+      required this.itemBuilder,
+      this.fillSpace = true,
+      this.upSwipeAllowed = false,
+      this.padding = EdgeInsets.zero})
       : super(key: key);
 
   @override
@@ -144,11 +151,13 @@ class _SwipeCardsState extends State<SwipeCards> {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      fit: widget.fillSpace == true ? StackFit.expand : StackFit.loose,
       children: <Widget>[
         if (widget.matchEngine.nextItem != null)
           DraggableCard(
             isDraggable: false,
             card: _buildBackCard(),
+            upSwipeAllowed: widget.upSwipeAllowed,
           ),
         if (widget.matchEngine.currentItem != null)
           DraggableCard(
@@ -157,6 +166,7 @@ class _SwipeCardsState extends State<SwipeCards> {
             onSlideUpdate: _onSlideUpdate,
             onSlideRegionUpdate: _onSlideRegion,
             onSlideOutComplete: _onSlideOutComplete,
+            upSwipeAllowed: widget.upSwipeAllowed,
           )
       ],
     );

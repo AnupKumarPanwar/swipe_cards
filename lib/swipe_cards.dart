@@ -158,6 +158,7 @@ class _SwipeCardsState extends State<SwipeCards> {
             isDraggable: false,
             card: _buildBackCard(),
             upSwipeAllowed: widget.upSwipeAllowed,
+            isBackCard: true,
           ),
         if (widget.matchEngine.currentItem != null)
           DraggableCard(
@@ -167,6 +168,7 @@ class _SwipeCardsState extends State<SwipeCards> {
             onSlideRegionUpdate: _onSlideRegion,
             onSlideOutComplete: _onSlideOutComplete,
             upSwipeAllowed: widget.upSwipeAllowed,
+            isBackCard: false,
           )
       ],
     );

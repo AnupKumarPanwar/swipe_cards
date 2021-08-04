@@ -15,6 +15,7 @@ class DraggableCard extends StatefulWidget {
   final Function(SlideDirection? direction)? onSlideOutComplete;
   final bool upSwipeAllowed;
   final EdgeInsets padding;
+  final bool isBackCard;
 
   DraggableCard(
       {this.card,
@@ -24,6 +25,7 @@ class DraggableCard extends StatefulWidget {
       this.slideTo,
       this.onSlideRegionUpdate,
       this.upSwipeAllowed = true,
+      this.isBackCard = false,
       this.padding = EdgeInsets.zero});
 
   @override
@@ -281,6 +283,14 @@ class _DraggableCardState extends State<DraggableCard>
   Widget build(BuildContext context) {
     if (!isAnchorInitialized) {
       _initAnchor();
+    }
+
+    //Disables dragging card while slide out animation is in progress. Solves
+    // issue that fast swipes cause the back card not loading
+    if (widget.isBackCard &&
+        anchorBounds != null &&
+        cardOffset!.dx < anchorBounds!.height) {
+      cardOffset = Offset.zero;
     }
 
     return Transform(

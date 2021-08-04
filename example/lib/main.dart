@@ -35,13 +35,25 @@ class _MyHomePageState extends State<MyHomePage> {
   List<SwipeItem> _swipeItems = <SwipeItem>[];
   MatchEngine? _matchEngine;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  List<String> _names = ["Red", "Blue", "Green", "Yellow", "Orange"];
+  List<String> _names = [
+    "Red",
+    "Blue",
+    "Green",
+    "Yellow",
+    "Orange",
+    "Grey",
+    "Purple",
+    "Pink"
+  ];
   List<Color> _colors = [
     Colors.red,
     Colors.blue,
     Colors.green,
     Colors.yellow,
-    Colors.orange
+    Colors.orange,
+    Colors.grey,
+    Colors.purple,
+    Colors.pink
   ];
 
   @override
@@ -103,6 +115,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   content: Text("Stack Finished"),
                   duration: Duration(milliseconds: 500),
                 ));
+              },
+              itemChanged: (item, index) {
+                print("item: ${item.content.text}, index: $index");
               },
             ),
           ),

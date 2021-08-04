@@ -9,17 +9,19 @@ class SwipeCards extends StatefulWidget {
   final IndexedWidgetBuilder itemBuilder;
   final MatchEngine matchEngine;
   final Function onStackFinished;
+  Function(SwipeItem, int)? itemChanged;
   final bool fillSpace;
   final bool upSwipeAllowed;
   final EdgeInsets padding;
 
-  const SwipeCards(
+  SwipeCards(
       {Key? key,
       required this.matchEngine,
       required this.onStackFinished,
       required this.itemBuilder,
       this.fillSpace = true,
       this.upSwipeAllowed = false,
+      this.itemChanged,
       this.padding = EdgeInsets.zero})
       : super(key: key);
 
@@ -127,6 +129,12 @@ class _SwipeCardsState extends State<SwipeCards> {
       case SlideDirection.up:
         currentMatch!.superLike();
         break;
+    }
+
+    if (widget.matchEngine._nextItemIndex! <
+        widget.matchEngine._swipeItems!.length) {
+      widget.itemChanged?.call(
+          widget.matchEngine.nextItem!, widget.matchEngine._nextItemIndex!);
     }
 
     widget.matchEngine.cycleMatch();

@@ -9,46 +9,60 @@ A Flutter widget for Tinder like swipe cards. The card can be swiped right, left
 To install the package, add the following dependency to your `pubspec.yaml`
 ```
 dependencies:
-  swipe_cards: ^0.1.0
+  swipe_cards: ^1.0.0
 ```
 
 ## Usage
 
 ### Basic
+
 ```
 import 'package:swipe_cards/swipe_cards.dart';
 
 SwipeCards(
             matchEngine: <MatchEngine>,
             itemBuilder: (BuildContext context, int index) {},
-            onStackFinished: () {}
+            onStackFinished: () {},
+            itemChanged: (SwipeItem item, int index) {},
+            upSwipeAllowed: <bool>,
+            fillSpace: <bool>,
 );
 ```
 
 ### Attributes of SwipeCards
-| Key  				| Description   												   	|
+
+| Key                | Description                                                    |
 |-------------------|-------------------------------------------------------------------|
-| `matchEngine` 	| An instance of `MatchEngine` that acts as controller for trigerring swipes manually.	|
-| `itemBuilder`     |  A function that returns the view inside a swipe card.				    |
-| `onStackFinished` |  A function that is triggered as soon as all the cards have been swiped. 	|
+| `matchEngine`    |  An instance of `MatchEngine` that acts as controller for trigerring swipes manually.    |
+| `itemBuilder`     |  A function that returns the view inside a swipe card.                    |
+| `onStackFinished` |  A function that is triggered as soon as all the cards have been swiped.    |
+| `itemChanged`     |  A function that is triggered when item in the stack changes (moves to next card).    |
+| `upSwipeAllowed`  |  To enable/disable up swipe. (Default: false)    |
+| `fillSpace`       |  Config weather to fill up the space or not. (Default: true)    |
 
 ### MatchEngine
-`MatchEngine` is the controller for the swipe cards. It takes `swipeItems` as an argument and is used to trigger the swipes manually, for example on button press. The data type of `swipeItems` is `List<SwipeItem>`.
+
+`MatchEngine` is the controller for the swipe cards. It takes `swipeItems` as an argument and is
+used to trigger the swipes manually, for example on button press. The data type of `swipeItems`
+is `List<SwipeItem>`.
 
 ```
 MatchEngine _matchEngine = MatchEngine(swipeItems: List<SwipeItem>);
 ```
 
 ### Functions in MatchEngine
-| Key  				| Description   												   	|
-|-------------------|-------------------------------------------------------------------|
-| `_matchEngine.currentItem.like();` 	| To trigger right swipe manually.	|
-| `_matchEngine.currentItem.nope();`     |  To trigger left swipe manually.				    |
-| `_matchEngine.currentItem.superLike();` |  To trigger up swipe manually. 	|
 
+| Key                | Description                                                    |
+|-------------------|-------------------------------------------------------------------|
+| `_matchEngine.currentItem.like();`    | To trigger right swipe manually.    |
+| `_matchEngine.currentItem.nope();`     |  To trigger left swipe manually.                    |
+| `_matchEngine.currentItem.superLike();` |  To trigger up swipe manually.    |
 
 ### SwipeItem
-`SwipeItem` contains the actual data that can be rendered in the swipe card. Actually it is a wrapper over any dynamic object and just adds the functionality of like, nope and superlike to that object.
+
+`SwipeItem` contains the actual data that can be rendered in the swipe card. Actually it is a
+wrapper over any dynamic object and just adds the functionality of like, nope and superlike to that
+object.
 
 ```
 SwipeItem(
@@ -61,20 +75,25 @@ SwipeItem(
             },
             superlikeAction: () {
                 log("Superlike");
+            },
+            onSlideUpdate: (SlideRegion? region){
+                log("Region $region");
             }
 );
 ```
 
 ### Attributes of SwipeItem
-| Key  				| Description   												   	|
-|-------------------|-------------------------------------------------------------------|
-| `content` 	| An object that contains the actual data to be rendered in the swipe card.	|
-| `likeAction`     |  A function that is triggered when the card is liked.				    |
-| `nopeAction` |  A function that is triggered when the card is not liked / swiped left. 	|
-| `superlikeAction` |  A function that is triggered when the card is superliked. 	|
 
+| Key                | Description                                                    |
+|-------------------|-------------------------------------------------------------------|
+| `content`    | An object that contains the actual data to be rendered in the swipe card.    |
+| `likeAction`     |  A function that is triggered when the card is liked.                    |
+| `nopeAction` |  A function that is triggered when the card is not liked / swiped left.    |
+| `superlikeAction` |  A function that is triggered when the card is superliked.    |
+| `onSlideUpdate` |  A function that is triggered when the card is being dragged and tells about the current region of the card.    |
 
 ### Example
+
 ```
 List<SwipeItem> _swipeItems = List<SwipeItem>();
   MatchEngine _matchEngine;
@@ -110,6 +129,9 @@ List<SwipeItem> _swipeItems = List<SwipeItem>();
               content: Text("Superliked ${_names[i]}"),
               duration: Duration(milliseconds: 500),
             ));
+          },
+          onSlideUpdate: (SlideRegion? region) async {
+            print("Region $region");
           }));
     }
 
@@ -146,6 +168,11 @@ List<SwipeItem> _swipeItems = List<SwipeItem>();
                       duration: Duration(milliseconds: 500),
                     ));
                   },
+                  itemChanged: (SwipeItem item, int index) {
+                    print("item: ${item.content.text}, index: $index");
+                  },
+                  upSwipeAllowed: true,
+                  fillSpace: true,
                 ),
               ),
               Row(

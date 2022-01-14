@@ -12,18 +12,16 @@ class SwipeCards extends StatefulWidget {
   Function(SwipeItem, int)? itemChanged;
   final bool fillSpace;
   final bool upSwipeAllowed;
-  final EdgeInsets padding;
 
-  SwipeCards(
-      {Key? key,
-      required this.matchEngine,
-      required this.onStackFinished,
-      required this.itemBuilder,
-      this.fillSpace = true,
-      this.upSwipeAllowed = false,
-      this.itemChanged,
-      this.padding = EdgeInsets.zero})
-      : super(key: key);
+  SwipeCards({
+    Key? key,
+    required this.matchEngine,
+    required this.onStackFinished,
+    required this.itemBuilder,
+    this.fillSpace = true,
+    this.upSwipeAllowed = false,
+    this.itemChanged,
+  }) : super(key: key);
 
   @override
   _SwipeCardsState createState() => _SwipeCardsState();

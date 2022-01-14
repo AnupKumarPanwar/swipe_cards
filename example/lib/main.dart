@@ -62,29 +62,28 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     for (int i = 0; i < _names.length; i++) {
       _swipeItems.add(SwipeItem(
-        content: Content(text: _names[i], color: _colors[i]),
-        likeAction: () {
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text("Liked ${_names[i]}"),
-            duration: Duration(milliseconds: 500),
-          ));
-        },
-        nopeAction: () {
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text("Nope ${_names[i]}"),
-            duration: Duration(milliseconds: 500),
-          ));
-        },
-        superlikeAction: () {
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text("Superliked ${_names[i]}"),
-            duration: Duration(milliseconds: 500),
-          ));
-        },
-        onSlideUpdate: (SlideRegion region) async {
-          print("Region $region");
-        }
-      ));
+          content: Content(text: _names[i], color: _colors[i]),
+          likeAction: () {
+            _scaffoldKey.currentState?.showSnackBar(SnackBar(
+              content: Text("Liked ${_names[i]}"),
+              duration: Duration(milliseconds: 500),
+            ));
+          },
+          nopeAction: () {
+            _scaffoldKey.currentState?.showSnackBar(SnackBar(
+              content: Text("Nope ${_names[i]}"),
+              duration: Duration(milliseconds: 500),
+            ));
+          },
+          superlikeAction: () {
+            _scaffoldKey.currentState?.showSnackBar(SnackBar(
+              content: Text("Superliked ${_names[i]}"),
+              duration: Duration(milliseconds: 500),
+            ));
+          },
+          onSlideUpdate: (SlideRegion? region) async {
+            print("Region $region");
+          }));
     }
 
     _matchEngine = MatchEngine(swipeItems: _swipeItems);
@@ -120,9 +119,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   duration: Duration(milliseconds: 500),
                 ));
               },
-              itemChanged: (item, index) {
+              itemChanged: (SwipeItem item, int index) {
                 print("item: ${item.content.text}, index: $index");
               },
+              upSwipeAllowed: true,
+              fillSpace: true,
             ),
           ),
           Row(

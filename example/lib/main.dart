@@ -1,4 +1,6 @@
+import 'package:example/content.dart';
 import 'package:flutter/material.dart';
+import 'package:swipe_cards/draggable_card.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 
 import 'content.dart';
@@ -60,27 +62,29 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     for (int i = 0; i < _names.length; i++) {
       _swipeItems.add(SwipeItem(
-          content: Content(text: _names[i], color: _colors[i]),
-          likeAction: () {
-            print("Liked ${_names[i]}");
-            _scaffoldKey.currentState!.showSnackBar(SnackBar(
-              content: Text("Liked ${_names[i]}"),
-              duration: Duration(milliseconds: 500),
-            ));
-          },
-          nopeAction: () {
-            print("Nope ${_names[i]}");
-            _scaffoldKey.currentState!.showSnackBar(SnackBar(
-              content: Text("Nope ${_names[i]}"),
-              duration: Duration(milliseconds: 500),
-            ));
-          },
-          superlikeAction: () {
-            _scaffoldKey.currentState!.showSnackBar(SnackBar(
-              content: Text("Superliked ${_names[i]}"),
-              duration: Duration(milliseconds: 500),
-            ));
-          }));
+        content: Content(text: _names[i], color: _colors[i]),
+        likeAction: () {
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            content: Text("Liked ${_names[i]}"),
+            duration: Duration(milliseconds: 500),
+          ));
+        },
+        nopeAction: () {
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            content: Text("Nope ${_names[i]}"),
+            duration: Duration(milliseconds: 500),
+          ));
+        },
+        superlikeAction: () {
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            content: Text("Superliked ${_names[i]}"),
+            duration: Duration(milliseconds: 500),
+          ));
+        },
+        onSlideUpdate: (SlideRegion region) async {
+          print("Region $region");
+        }
+      ));
     }
 
     _matchEngine = MatchEngine(swipeItems: _swipeItems);

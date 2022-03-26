@@ -16,6 +16,8 @@ class DraggableCard extends StatefulWidget {
   final bool upSwipeAllowed;
   final EdgeInsets padding;
   final bool isBackCard;
+  final bool leftSwipeAllowed;
+  final bool rightSwipeAllowed;
 
   DraggableCard(
       {this.card,
@@ -26,7 +28,9 @@ class DraggableCard extends StatefulWidget {
       this.onSlideRegionUpdate,
       this.upSwipeAllowed = true,
       this.isBackCard = false,
-      this.padding = EdgeInsets.zero});
+      this.padding = EdgeInsets.zero,
+      this.leftSwipeAllowed = true,
+      this.rightSwipeAllowed = true});
 
   @override
   _DraggableCardState createState() => _DraggableCardState();
@@ -229,13 +233,30 @@ class _DraggableCardState extends State<DraggableCard>
     final isInTopRegion = (cardOffset!.dy / context.size!.height) < -0.15;
 
     setState(() {
-      if (isInLeftRegion || isInRightRegion) {
-        slideOutTween = Tween(
-            begin: cardOffset, end: dragVector * (2 * context.size!.width));
-        slideOutAnimation.forward(from: 0.0);
+      if (isInRightRegion) {
+        if (widget.rightSwipeAllowed) {
+          slideOutTween = Tween(
+              begin: cardOffset, end: dragVector * (2 * context.size!.width));
+          slideOutAnimation.forward(from: 0.0);
 
-        slideOutDirection =
-            isInLeftRegion ? SlideDirection.left : SlideDirection.right;
+          slideOutDirection =
+              isInLeftRegion ? SlideDirection.left : SlideDirection.right;
+        } else {
+          slideBackStart = cardOffset;
+          slideBackAnimation.forward(from: 0.0);
+        }
+      } else if (isInLeftRegion) {
+        if (widget.leftSwipeAllowed) {
+          slideOutTween = Tween(
+              begin: cardOffset, end: dragVector * (2 * context.size!.width));
+          slideOutAnimation.forward(from: 0.0);
+
+          slideOutDirection =
+              isInLeftRegion ? SlideDirection.left : SlideDirection.right;
+        } else {
+          slideBackStart = cardOffset;
+          slideBackAnimation.forward(from: 0.0);
+        }
       } else if (isInTopRegion) {
         if (widget.upSwipeAllowed) {
           slideOutTween = Tween(

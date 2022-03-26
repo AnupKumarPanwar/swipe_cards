@@ -12,6 +12,8 @@ class SwipeCards extends StatefulWidget {
   Function(SwipeItem, int)? itemChanged;
   final bool fillSpace;
   final bool upSwipeAllowed;
+  final bool leftSwipeAllowed;
+  final bool rightSwipeAllowed;
 
   SwipeCards({
     Key? key,
@@ -21,6 +23,8 @@ class SwipeCards extends StatefulWidget {
     this.fillSpace = true,
     this.upSwipeAllowed = false,
     this.itemChanged,
+    this.leftSwipeAllowed = true,
+    this.rightSwipeAllowed = true,
   }) : super(key: key);
 
   @override
@@ -169,6 +173,8 @@ class _SwipeCardsState extends State<SwipeCards> {
             card: _buildBackCard(),
             upSwipeAllowed: widget.upSwipeAllowed,
             isBackCard: true,
+            leftSwipeAllowed: widget.leftSwipeAllowed,
+            rightSwipeAllowed: widget.rightSwipeAllowed,
           ),
         if (widget.matchEngine.currentItem != null)
           DraggableCard(
@@ -179,6 +185,8 @@ class _SwipeCardsState extends State<SwipeCards> {
             onSlideOutComplete: _onSlideOutComplete,
             upSwipeAllowed: widget.upSwipeAllowed,
             isBackCard: false,
+            leftSwipeAllowed: widget.leftSwipeAllowed,
+            rightSwipeAllowed: widget.rightSwipeAllowed,
           )
       ],
     );

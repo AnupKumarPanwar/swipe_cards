@@ -33,8 +33,11 @@ SwipeCards(
 
 | Key                | Description                                                    |
 |-------------------|-------------------------------------------------------------------|
-| `matchEngine`    |  An instance of `MatchEngine` that acts as controller for trigerring swipes manually.    |
+| `matchEngine`     |  An instance of `MatchEngine` that acts as controller for trigerring swipes manually.    |
 | `itemBuilder`     |  A function that returns the view inside a swipe card.                    |
+| `likeTag`         |  Widget appears in like/right area during swipe.                    |
+| `nopeTag`         |  Widget appears in nope/left area during swipe.                    |
+| `superLikeTag`    |  Widget appears in super-like/up area during swipe.                    |
 | `onStackFinished` |  A function that is triggered as soon as all the cards have been swiped.    |
 | `itemChanged`     |  A function that is triggered when item in the stack changes (moves to next card).    |
 | `upSwipeAllowed`  |  To enable/disable up swipe. (Default: false)    |

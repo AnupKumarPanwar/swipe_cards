@@ -12,6 +12,7 @@ class SwipeCards extends StatefulWidget {
   Function(SwipeItem, int)? itemChanged;
   final bool fillSpace;
   final bool upSwipeAllowed;
+  final bool leftSwipeAllowed;
 
   SwipeCards({
     Key? key,
@@ -20,6 +21,7 @@ class SwipeCards extends StatefulWidget {
     required this.itemBuilder,
     this.fillSpace = true,
     this.upSwipeAllowed = false,
+    this.leftSwipeAllowed = false,
     this.itemChanged,
   }) : super(key: key);
 
@@ -168,6 +170,7 @@ class _SwipeCardsState extends State<SwipeCards> {
             isDraggable: false,
             card: _buildBackCard(),
             upSwipeAllowed: widget.upSwipeAllowed,
+            leftSwipeAllowed: widget.leftSwipeAllowed,
             isBackCard: true,
           ),
         if (widget.matchEngine.currentItem != null)
@@ -178,6 +181,7 @@ class _SwipeCardsState extends State<SwipeCards> {
             onSlideRegionUpdate: _onSlideRegion,
             onSlideOutComplete: _onSlideOutComplete,
             upSwipeAllowed: widget.upSwipeAllowed,
+            leftSwipeAllowed: widget.leftSwipeAllowed,
             isBackCard: false,
           )
       ],

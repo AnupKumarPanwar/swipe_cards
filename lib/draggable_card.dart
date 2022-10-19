@@ -16,6 +16,7 @@ class DraggableCard extends StatefulWidget {
   final Function(SlideDirection? direction)? onSlideOutComplete;
   final bool upSwipeAllowed;
   final bool leftSwipeAllowed;
+  final bool rightSwipeAllowed;
   final EdgeInsets padding;
   final bool isBackCard;
 
@@ -28,6 +29,7 @@ class DraggableCard extends StatefulWidget {
       this.onSlideRegionUpdate,
       this.upSwipeAllowed = true,
       this.leftSwipeAllowed = true,
+      this.rightSwipeAllowed = true,
       this.isBackCard = false,
       this.padding = EdgeInsets.zero});
 
@@ -244,11 +246,16 @@ class _DraggableCardState extends State<DraggableCard>
           slideBackAnimation.forward(from: 0.0);
         }
       } else if (isInRightRegion) {
-        slideOutTween = Tween(
-            begin: cardOffset, end: dragVector * (2 * context.size!.width));
-        slideOutAnimation.forward(from: 0.0);
+        if (widget.rightSwipeAllowed) {
+          slideOutTween = Tween(
+              begin: cardOffset, end: dragVector * (2 * context.size!.width));
+          slideOutAnimation.forward(from: 0.0);
 
-        slideOutDirection = SlideDirection.right;
+          slideOutDirection = SlideDirection.right;
+        } else {
+          slideBackStart = cardOffset;
+          slideBackAnimation.forward(from: 0.0);
+        }
       } else if (isInTopRegion) {
         if (widget.upSwipeAllowed) {
           slideOutTween = Tween(

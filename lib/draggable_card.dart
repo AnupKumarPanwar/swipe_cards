@@ -209,7 +209,9 @@ class _DraggableCardState extends State<DraggableCard>
       }
 
       dragPosition = details.globalPosition;
-      cardOffset = dragPosition! - dragStart!;
+      if(dragStart != null && dragPosition != null) {
+        cardOffset = dragPosition! - dragStart!;
+      }
 
       if (null != widget.onSlideUpdate) {
         widget.onSlideUpdate!(cardOffset!.distance);

@@ -33,7 +33,7 @@ class DraggableCard extends StatefulWidget {
       this.onSlideOutComplete,
       this.slideTo,
       this.onSlideRegionUpdate,
-      this.upSwipeAllowed = true,
+      this.upSwipeAllowed = false,
       this.leftSwipeAllowed = true,
       this.rightSwipeAllowed = true,
       this.isBackCard = false,
@@ -360,7 +360,7 @@ class _DraggableCardState extends State<DraggableCard>
                     if (widget.superLikeTag != null &&
                         slideRegion == SlideRegion.inSuperLikeRegion)
                       Align(
-                        alignment: Alignment.topCenter,
+                        alignment: Alignment.bottomCenter,
                         child: widget.superLikeTag,
                       ),
                   ],

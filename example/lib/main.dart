@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:swipe_cards/draggable_card.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 
-import 'content.dart';
-
 void main() {
   runApp(MyApp());
 }
@@ -64,19 +62,19 @@ class _MyHomePageState extends State<MyHomePage> {
       _swipeItems.add(SwipeItem(
           content: Content(text: _names[i], color: _colors[i]),
           likeAction: () {
-            _scaffoldKey.currentState?.showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text("Liked ${_names[i]}"),
               duration: Duration(milliseconds: 500),
             ));
           },
           nopeAction: () {
-            _scaffoldKey.currentState?.showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text("Nope ${_names[i]}"),
               duration: Duration(milliseconds: 500),
             ));
           },
           superlikeAction: () {
-            _scaffoldKey.currentState?.showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text("Superliked ${_names[i]}"),
               duration: Duration(milliseconds: 500),
             ));
@@ -114,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
               onStackFinished: () {
-                _scaffoldKey.currentState!.showSnackBar(SnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text("Stack Finished"),
                   duration: Duration(milliseconds: 500),
                 ));
@@ -123,30 +121,57 @@ class _MyHomePageState extends State<MyHomePage> {
                 print("item: ${item.content.text}, index: $index");
               },
               leftSwipeAllowed: true,
-              rightSwipeAllowed: false,
+              rightSwipeAllowed: true,
               upSwipeAllowed: true,
               fillSpace: true,
+              likeTag: Container(
+                margin: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(3.0),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.green)
+                ),
+                child: Text('Like'),
+              ),
+              nopeTag: Container(
+                margin: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(3.0),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.red)
+                ),
+                child: Text('Nope'),
+              ),
+              superLikeTag: Container(
+                margin: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(3.0),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.orange)
+                ),
+                child: Text('Super Like'),
+              ),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    _matchEngine!.currentItem?.nope();
-                  },
-                  child: Text("Nope")),
-              ElevatedButton(
-                  onPressed: () {
-                    _matchEngine!.currentItem?.superLike();
-                  },
-                  child: Text("Superlike")),
-              ElevatedButton(
-                  onPressed: () {
-                    _matchEngine!.currentItem?.like();
-                  },
-                  child: Text("Like"))
-            ],
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      _matchEngine!.currentItem?.nope();
+                    },
+                    child: Text("Nope")),
+                ElevatedButton(
+                    onPressed: () {
+                      _matchEngine!.currentItem?.superLike();
+                    },
+                    child: Text("Superlike")),
+                ElevatedButton(
+                    onPressed: () {
+                      _matchEngine!.currentItem?.like();
+                    },
+                    child: Text("Like"))
+              ],
+            ),
           )
         ])));
   }

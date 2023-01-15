@@ -26,3 +26,8 @@
 * Added fillSpace configuration.
 * Added upSwipeAllowed configuration.
 * Fixes back card not loading issues.
+
+## [2.0.0] - 15 January 2023.
+
+* Added likeTag, nopeTag, superLikeTag callback.
+* Added leftSwipeAllowed, righ callback.

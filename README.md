@@ -9,7 +9,7 @@ A Flutter widget for Tinder like swipe cards. The card can be swiped right, left
 To install the package, add the following dependency to your `pubspec.yaml`
 ```
 dependencies:
-  swipe_cards: ^1.0.0
+  swipe_cards: ^2.0.0
 ```
 
 ## Usage
@@ -32,16 +32,18 @@ SwipeCards(
 ### Attributes of SwipeCards
 
 | Key                | Description                                                    |
-|-------------------|-------------------------------------------------------------------|
-| `matchEngine`     |  An instance of `MatchEngine` that acts as controller for trigerring swipes manually.    |
-| `itemBuilder`     |  A function that returns the view inside a swipe card.                    |
-| `likeTag`         |  Widget appears in like/right area during swipe.                    |
-| `nopeTag`         |  Widget appears in nope/left area during swipe.                    |
-| `superLikeTag`    |  Widget appears in super-like/up area during swipe.                    |
-| `onStackFinished` |  A function that is triggered as soon as all the cards have been swiped.    |
-| `itemChanged`     |  A function that is triggered when item in the stack changes (moves to next card).    |
-| `upSwipeAllowed`  |  To enable/disable up swipe. (Default: false)    |
-| `fillSpace`       |  Config weather to fill up the space or not. (Default: true)    |
+|---------------------|-------------------------------------------------------------------|
+| `matchEngine`       |  An instance of `MatchEngine` that acts as controller for trigerring swipes manually.    |
+| `itemBuilder`       |  A function that returns the view inside a swipe card.                    |
+| `likeTag`           |  Widget appears in like/right area during swipe.                    |
+| `nopeTag`           |  Widget appears in nope/left area during swipe.                    |
+| `superLikeTag`      |  Widget appears in super-like/up area during swipe.                    |
+| `onStackFinished`   |  A function that is triggered as soon as all the cards have been swiped.    |
+| `itemChanged`       |  A function that is triggered when item in the stack changes (moves to next card).    |
+| `leftSwipeAllowed`  |  To enable/disable left swipe. (Default: true)    |
+| `rightSwipeAllowed` |  To enable/disable right swipe. (Default: true)    |
+| `upSwipeAllowed`    |  To enable/disable up swipe. (Default: false)    |
+| `fillSpace`         |  Config weather to fill up the space or not. (Default: true)    |
 
 ### MatchEngine
 

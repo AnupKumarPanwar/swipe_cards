@@ -28,8 +28,8 @@ class SwipeCards extends StatefulWidget {
     this.superLikeTag,
     this.fillSpace = true,
     this.upSwipeAllowed = false,
-    this.leftSwipeAllowed = false,
-    this.rightSwipeAllowed = false,
+    this.leftSwipeAllowed = true,
+    this.rightSwipeAllowed = true,
     this.itemChanged,
   }) : super(key: key);
 

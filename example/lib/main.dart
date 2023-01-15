@@ -122,6 +122,8 @@ class _MyHomePageState extends State<MyHomePage> {
               itemChanged: (SwipeItem item, int index) {
                 print("item: ${item.content.text}, index: $index");
               },
+              leftSwipeAllowed: true,
+              rightSwipeAllowed: false,
               upSwipeAllowed: true,
               fillSpace: true,
             ),

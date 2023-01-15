@@ -47,8 +47,13 @@ class _SwipeCardsState extends State<SwipeCards> {
   void initState() {
     widget.matchEngine.addListener(_onMatchEngineChange);
     _currentItem = widget.matchEngine.currentItem;
-    _currentItem!.addListener(_onMatchChange);
-    _frontCard = Key(widget.matchEngine._currentItemIndex.toString());
+    if (_currentItem != null) {
+      _currentItem!.addListener(_onMatchChange);
+    }
+    int? currentItemIndex = widget.matchEngine._currentItemIndex;
+    if (currentItemIndex != null) {
+      _frontCard = Key(currentItemIndex.toString());
+    }
     super.initState();
   }
 

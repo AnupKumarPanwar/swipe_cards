@@ -151,6 +151,7 @@ class _DraggableCardState extends State<DraggableCard>
 
   @override
   void dispose() {
+    slideOutAnimation.dispose();
     slideBackAnimation.dispose();
     super.dispose();
   }

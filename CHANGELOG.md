@@ -31,3 +31,7 @@
 
 * Added likeTag, nopeTag, superLikeTag callback.
 * Added leftSwipeAllowed, righ callback.
+
+## [2.0.0+1] - 15 January 2023.
+
+* Fix README

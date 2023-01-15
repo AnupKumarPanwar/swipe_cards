@@ -9,7 +9,7 @@ A Flutter widget for Tinder like swipe cards. The card can be swiped right, left
 To install the package, add the following dependency to your `pubspec.yaml`
 ```
 dependencies:
-  swipe_cards: ^2.0.0
+  swipe_cards: ^2.0.0+1
 ```
 
 ## Usage
@@ -118,19 +118,19 @@ List<SwipeItem> _swipeItems = List<SwipeItem>();
       _swipeItems.add(SwipeItem(
           content: Content(text: _names[i], color: _colors[i]),
           likeAction: () {
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text("Liked ${_names[i]}"),
               duration: Duration(milliseconds: 500),
             ));
           },
           nopeAction: () {
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text("Nope ${_names[i]}"),
               duration: Duration(milliseconds: 500),
             ));
           },
           superlikeAction: () {
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text("Superliked ${_names[i]}"),
               duration: Duration(milliseconds: 500),
             ));
@@ -168,7 +168,7 @@ List<SwipeItem> _swipeItems = List<SwipeItem>();
                 );
                   },
                   onStackFinished: () {
-                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text("Stack Finished"),
                       duration: Duration(milliseconds: 500),
                     ));

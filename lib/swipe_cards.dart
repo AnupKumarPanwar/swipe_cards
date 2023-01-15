@@ -7,19 +7,29 @@ import 'package:swipe_cards/profile_card.dart';
 
 class SwipeCards extends StatefulWidget {
   final IndexedWidgetBuilder itemBuilder;
+  final Widget? likeTag;
+  final Widget? nopeTag;
+  final Widget? superLikeTag;
   final MatchEngine matchEngine;
   final Function onStackFinished;
-  Function(SwipeItem, int)? itemChanged;
+  final Function(SwipeItem, int)? itemChanged;
   final bool fillSpace;
   final bool upSwipeAllowed;
+  final bool leftSwipeAllowed;
+  final bool rightSwipeAllowed;
 
   SwipeCards({
     Key? key,
     required this.matchEngine,
     required this.onStackFinished,
     required this.itemBuilder,
+    this.likeTag,
+    this.nopeTag,
+    this.superLikeTag,
     this.fillSpace = true,
     this.upSwipeAllowed = false,
+    this.leftSwipeAllowed = false,
+    this.rightSwipeAllowed = false,
     this.itemChanged,
   }) : super(key: key);
 
@@ -128,13 +138,15 @@ class _SwipeCardsState extends State<SwipeCards> {
     SwipeItem? currentMatch = widget.matchEngine.currentItem;
     switch (direction) {
       case SlideDirection.left:
-        currentMatch!.nope();
+        currentMatch?.nope();
         break;
       case SlideDirection.right:
-        currentMatch!.like();
+        currentMatch?.like();
         break;
       case SlideDirection.up:
-        currentMatch!.superLike();
+        currentMatch?.superLike();
+        break;
+      case null:
         break;
     }
 
@@ -173,16 +185,23 @@ class _SwipeCardsState extends State<SwipeCards> {
             isDraggable: false,
             card: _buildBackCard(),
             upSwipeAllowed: widget.upSwipeAllowed,
+            leftSwipeAllowed: widget.leftSwipeAllowed,
+            rightSwipeAllowed: widget.rightSwipeAllowed,
             isBackCard: true,
           ),
         if (widget.matchEngine.currentItem != null)
           DraggableCard(
             card: _buildFrontCard(),
+            likeTag: widget.likeTag,
+            nopeTag: widget.nopeTag,
+            superLikeTag: widget.superLikeTag,
             slideTo: _desiredSlideOutDirection(),
             onSlideUpdate: _onSlideUpdate,
             onSlideRegionUpdate: _onSlideRegion,
             onSlideOutComplete: _onSlideOutComplete,
             upSwipeAllowed: widget.upSwipeAllowed,
+            leftSwipeAllowed: widget.leftSwipeAllowed,
+            rightSwipeAllowed: widget.rightSwipeAllowed,
             isBackCard: false,
           )
       ],
@@ -257,7 +276,7 @@ class SwipeItem extends ChangeNotifier {
     if (decision == Decision.undecided) {
       decision = Decision.like;
       try {
-        likeAction!();
+        likeAction?.call();
       } catch (e) {}
       notifyListeners();
     }
@@ -267,7 +286,7 @@ class SwipeItem extends ChangeNotifier {
     if (decision == Decision.undecided) {
       decision = Decision.nope;
       try {
-        nopeAction!();
+        nopeAction?.call();
       } catch (e) {}
       notifyListeners();
     }
@@ -277,7 +296,7 @@ class SwipeItem extends ChangeNotifier {
     if (decision == Decision.undecided) {
       decision = Decision.superLike;
       try {
-        superlikeAction!();
+        superlikeAction?.call();
       } catch (e) {}
       notifyListeners();
     }

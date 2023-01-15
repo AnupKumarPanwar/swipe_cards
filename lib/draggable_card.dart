@@ -4,27 +4,38 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 enum SlideDirection { left, right, up }
+
 enum SlideRegion { inNopeRegion, inLikeRegion, inSuperLikeRegion }
 
 class DraggableCard extends StatefulWidget {
   final Widget? card;
+  final Widget? likeTag;
+  final Widget? nopeTag;
+  final Widget? superLikeTag;
   final bool isDraggable;
   final SlideDirection? slideTo;
   final Function(double distance)? onSlideUpdate;
   final Function(SlideRegion? slideRegion)? onSlideRegionUpdate;
   final Function(SlideDirection? direction)? onSlideOutComplete;
   final bool upSwipeAllowed;
+  final bool leftSwipeAllowed;
+  final bool rightSwipeAllowed;
   final EdgeInsets padding;
   final bool isBackCard;
 
   DraggableCard(
       {this.card,
+      this.likeTag,
+      this.nopeTag,
+      this.superLikeTag,
       this.isDraggable = true,
       this.onSlideUpdate,
       this.onSlideOutComplete,
       this.slideTo,
       this.onSlideRegionUpdate,
       this.upSwipeAllowed = true,
+      this.leftSwipeAllowed = true,
+      this.rightSwipeAllowed = true,
       this.isBackCard = false,
       this.padding = EdgeInsets.zero});
 
@@ -124,7 +135,7 @@ class _DraggableCardState extends State<DraggableCard>
     }
 
     if (oldWidget.slideTo == null && widget.slideTo != null) {
-      switch (widget.slideTo) {
+      switch (widget.slideTo!) {
         case SlideDirection.left:
           _slideLeft();
           break;
@@ -230,13 +241,28 @@ class _DraggableCardState extends State<DraggableCard>
     final isInTopRegion = (cardOffset!.dy / context.size!.height) < -0.15;
 
     setState(() {
-      if (isInLeftRegion || isInRightRegion) {
-        slideOutTween = Tween(
-            begin: cardOffset, end: dragVector * (2 * context.size!.width));
-        slideOutAnimation.forward(from: 0.0);
+      if (isInLeftRegion) {
+        if (widget.leftSwipeAllowed) {
+          slideOutTween = Tween(
+              begin: cardOffset, end: dragVector * (2 * context.size!.width));
+          slideOutAnimation.forward(from: 0.0);
 
-        slideOutDirection =
-            isInLeftRegion ? SlideDirection.left : SlideDirection.right;
+          slideOutDirection = SlideDirection.left;
+        } else {
+          slideBackStart = cardOffset;
+          slideBackAnimation.forward(from: 0.0);
+        }
+      } else if (isInRightRegion) {
+        if (widget.rightSwipeAllowed) {
+          slideOutTween = Tween(
+              begin: cardOffset, end: dragVector * (2 * context.size!.width));
+          slideOutAnimation.forward(from: 0.0);
+
+          slideOutDirection = SlideDirection.right;
+        } else {
+          slideBackStart = cardOffset;
+          slideBackAnimation.forward(from: 0.0);
+        }
       } else if (isInTopRegion) {
         if (widget.upSwipeAllowed) {
           slideOutTween = Tween(
@@ -307,7 +333,39 @@ class _DraggableCardState extends State<DraggableCard>
           onPanStart: _onPanStart,
           onPanUpdate: _onPanUpdate,
           onPanEnd: _onPanEnd,
-          child: widget.card,
+          child: widget.card != null
+              ? Stack(
+                  children: [
+                    widget.card!,
+                    if (widget.likeTag != null &&
+                        slideRegion == SlideRegion.inLikeRegion)
+                      Positioned(
+                        top: 40,
+                        left: 20,
+                        child: Transform.rotate(
+                          angle: 12,
+                          child: widget.likeTag,
+                        ),
+                      ),
+                    if (widget.nopeTag != null &&
+                        slideRegion == SlideRegion.inNopeRegion)
+                      Positioned(
+                        top: 40,
+                        right: 20,
+                        child: Transform.rotate(
+                          angle: -12,
+                          child: widget.nopeTag,
+                        ),
+                      ),
+                    if (widget.superLikeTag != null &&
+                        slideRegion == SlideRegion.inSuperLikeRegion)
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: widget.superLikeTag,
+                      ),
+                  ],
+                )
+              : Container(),
         ),
       ),
     );

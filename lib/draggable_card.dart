@@ -9,6 +9,9 @@ enum SlideRegion { inNopeRegion, inLikeRegion, inSuperLikeRegion }
 
 class DraggableCard extends StatefulWidget {
   final Widget? card;
+  final Widget? likeTag;
+  final Widget? nopeTag;
+  final Widget? superLikeTag;
   final bool isDraggable;
   final SlideDirection? slideTo;
   final Function(double distance)? onSlideUpdate;
@@ -22,6 +25,9 @@ class DraggableCard extends StatefulWidget {
 
   DraggableCard(
       {this.card,
+      this.likeTag,
+      this.nopeTag,
+      this.superLikeTag,
       this.isDraggable = true,
       this.onSlideUpdate,
       this.onSlideOutComplete,
@@ -129,7 +135,7 @@ class _DraggableCardState extends State<DraggableCard>
     }
 
     if (oldWidget.slideTo == null && widget.slideTo != null) {
-      switch (widget.slideTo) {
+      switch (widget.slideTo!) {
         case SlideDirection.left:
           _slideLeft();
           break;
@@ -326,7 +332,39 @@ class _DraggableCardState extends State<DraggableCard>
           onPanStart: _onPanStart,
           onPanUpdate: _onPanUpdate,
           onPanEnd: _onPanEnd,
-          child: widget.card,
+          child: widget.card != null
+              ? Stack(
+                  children: [
+                    widget.card!,
+                    if (widget.likeTag != null &&
+                        slideRegion == SlideRegion.inLikeRegion)
+                      Positioned(
+                        top: 40,
+                        left: 20,
+                        child: Transform.rotate(
+                          angle: 12,
+                          child: widget.likeTag,
+                        ),
+                      ),
+                    if (widget.nopeTag != null &&
+                        slideRegion == SlideRegion.inNopeRegion)
+                      Positioned(
+                        top: 40,
+                        right: 20,
+                        child: Transform.rotate(
+                          angle: -12,
+                          child: widget.nopeTag,
+                        ),
+                      ),
+                    if (widget.superLikeTag != null &&
+                        slideRegion == SlideRegion.inSuperLikeRegion)
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: widget.superLikeTag,
+                      ),
+                  ],
+                )
+              : Container(),
         ),
       ),
     );

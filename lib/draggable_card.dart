@@ -17,6 +17,8 @@ class DraggableCard extends StatefulWidget {
   final Function(double distance)? onSlideUpdate;
   final Function(SlideRegion? slideRegion)? onSlideRegionUpdate;
   final Function(SlideDirection? direction)? onSlideOutComplete;
+  final Duration slideBackAnimationDuration;
+  final Duration slideOutAnimationDuration;
   final bool upSwipeAllowed;
   final bool leftSwipeAllowed;
   final bool rightSwipeAllowed;
@@ -31,6 +33,8 @@ class DraggableCard extends StatefulWidget {
       this.isDraggable = true,
       this.onSlideUpdate,
       this.onSlideOutComplete,
+      this.slideBackAnimationDuration = const Duration(milliseconds: 1000),
+      this.slideOutAnimationDuration = const Duration(milliseconds: 500),
       this.slideTo,
       this.onSlideRegionUpdate,
       this.upSwipeAllowed = false,
@@ -66,7 +70,7 @@ class _DraggableCardState extends State<DraggableCard>
   void initState() {
     super.initState();
     slideBackAnimation = AnimationController(
-      duration: const Duration(milliseconds: 1000),
+      duration: widget.slideBackAnimationDuration,
       vsync: this,
     )
       ..addListener(() => setState(() {
@@ -95,7 +99,7 @@ class _DraggableCardState extends State<DraggableCard>
       });
 
     slideOutAnimation = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: widget.slideOutAnimationDuration,
       vsync: this,
     )
       ..addListener(() {

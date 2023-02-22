@@ -191,6 +191,8 @@ class _SwipeCardsState extends State<SwipeCards> {
             upSwipeAllowed: widget.upSwipeAllowed,
             leftSwipeAllowed: widget.leftSwipeAllowed,
             rightSwipeAllowed: widget.rightSwipeAllowed,
+            slideBackAnimationDuration: widget.slideBackAnimationDuration,
+            slideOutAnimationDuration: widget.slideOutAnimationDuration,
             isBackCard: true,
           ),
         if (widget.matchEngine.currentItem != null)
@@ -206,6 +208,8 @@ class _SwipeCardsState extends State<SwipeCards> {
             upSwipeAllowed: widget.upSwipeAllowed,
             leftSwipeAllowed: widget.leftSwipeAllowed,
             rightSwipeAllowed: widget.rightSwipeAllowed,
+            slideBackAnimationDuration: widget.slideBackAnimationDuration,
+            slideOutAnimationDuration: widget.slideOutAnimationDuration,
             isBackCard: false,
           )
       ],

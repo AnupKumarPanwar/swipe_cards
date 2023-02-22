@@ -17,6 +17,8 @@ class SwipeCards extends StatefulWidget {
   final bool upSwipeAllowed;
   final bool leftSwipeAllowed;
   final bool rightSwipeAllowed;
+  final Duration slideBackAnimationDuration;
+  final Duration slideOutAnimationDuration;
 
   SwipeCards({
     Key? key,
@@ -30,6 +32,8 @@ class SwipeCards extends StatefulWidget {
     this.upSwipeAllowed = false,
     this.leftSwipeAllowed = true,
     this.rightSwipeAllowed = true,
+    this.slideBackAnimationDuration = const Duration(milliseconds: 1000),
+    this.slideOutAnimationDuration = const Duration(milliseconds: 500),
     this.itemChanged,
   }) : super(key: key);
 

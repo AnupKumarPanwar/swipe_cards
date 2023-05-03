@@ -49,6 +49,7 @@ class _DraggableCardState extends State<DraggableCard>
   Offset? cardOffset = const Offset(0.0, 0.0);
   Offset? dragStart;
   Offset? dragPosition;
+  double opacity = 0;
   Offset? slideBackStart;
   SlideDirection? slideOutDirection;
   SlideRegion? slideRegion;
@@ -204,11 +205,22 @@ class _DraggableCardState extends State<DraggableCard>
     }
   }
 
-  void _onPanUpdate(DragUpdateDetails details) {
-    final isInLeftRegion = (cardOffset!.dx / context.size!.width) < -0.45;
-    final isInRightRegion = (cardOffset!.dx / context.size!.width) > 0.45;
-    final isInTopRegion = (cardOffset!.dy / context.size!.height) < -0.40;
+  void calcOpacity() {
+    if(cardOffset == null)  {
+      opacity = 0; 
+      return;
+    }
+    final delta = 100;
+    var pos = cardOffset!.dx;
+    pos = pos.abs();
+    opacity = min(pos / delta, 1);
+  }
 
+  void _onPanUpdate(DragUpdateDetails details) {
+    final isInLeftRegion = (cardOffset!.dx / context.size!.width) < -0;
+    final isInRightRegion = (cardOffset!.dx / context.size!.width) > 0;
+    final isInTopRegion = (cardOffset!.dy / context.size!.height) < -0.40;
+    calcOpacity();
     setState(() {
       if (isInLeftRegion || isInRightRegion) {
         slideRegion = isInLeftRegion
@@ -236,8 +248,8 @@ class _DraggableCardState extends State<DraggableCard>
   void _onPanEnd(DragEndDetails details) {
     final dragVector = cardOffset! / cardOffset!.distance;
 
-    final isInLeftRegion = (cardOffset!.dx / context.size!.width) < -0.15;
-    final isInRightRegion = (cardOffset!.dx / context.size!.width) > 0.15;
+    final isInLeftRegion = (cardOffset!.dx / context.size!.width) < 0.4;
+    final isInRightRegion = (cardOffset!.dx / context.size!.width) > 0.4;
     final isInTopRegion = (cardOffset!.dy / context.size!.height) < -0.15;
 
     setState(() {
@@ -246,7 +258,6 @@ class _DraggableCardState extends State<DraggableCard>
           slideOutTween = Tween(
               begin: cardOffset, end: dragVector * (2 * context.size!.width));
           slideOutAnimation.forward(from: 0.0);
-
           slideOutDirection = SlideDirection.left;
         } else {
           slideBackStart = cardOffset;
@@ -339,24 +350,18 @@ class _DraggableCardState extends State<DraggableCard>
                     widget.card!,
                     if (widget.likeTag != null &&
                         slideRegion == SlideRegion.inLikeRegion)
-                      Positioned(
-                        top: 40,
-                        left: 20,
-                        child: Transform.rotate(
-                          angle: 12,
-                          child: widget.likeTag,
+                       Opacity(
+                          opacity: opacity,
+                          child: widget.likeTag, 
                         ),
-                      ),
                     if (widget.nopeTag != null &&
                         slideRegion == SlideRegion.inNopeRegion)
-                      Positioned(
-                        top: 40,
-                        right: 20,
-                        child: Transform.rotate(
-                          angle: -12,
+                      Opacity(
+                          opacity: opacity,
                           child: widget.nopeTag,
+                          
                         ),
-                      ),
+                      
                     if (widget.superLikeTag != null &&
                         slideRegion == SlideRegion.inSuperLikeRegion)
                       Align(

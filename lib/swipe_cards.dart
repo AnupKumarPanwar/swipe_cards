@@ -19,10 +19,20 @@ class SwipeCards extends StatefulWidget {
   final bool upSwipeAllowed;
   final bool leftSwipeAllowed;
   final bool rightSwipeAllowed;
+
+  /// Threshold for left swipe. The larger the number, the further the card needs to be dragged to activate the action. Must be less or equal to 0 to work correct.
   final double leftSwipeThreshold;
+
+  /// Threshold for right swipe. The larger the number, the further the card needs to be dragged to activate the action. Must be bigger or equal to 0 to work correct.
   final double rightSwipeThreshold;
+
+  /// Threshold for top swipe. The larger the number, the further the card needs to be dragged to activate the action.
   final double topSwipeThreshold;
+
+  /// Triggered when user dragging the card
   final Function(SwipeItem item, SlideRegion? slideRegion)? onSwipeChange;
+
+  /// Triggered when user releases the card
   final Function(SwipeItem item, SlideRegion? slideRegion)? onSwipeFinish;
 
   SwipeCards({

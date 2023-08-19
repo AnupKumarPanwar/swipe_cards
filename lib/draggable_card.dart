@@ -27,6 +27,8 @@ class DraggableCard extends StatefulWidget {
   final double leftSwipeThreshold;
   final double rightSwipeThreshold;
   final double topSwipeThreshold;
+  final double nopeTagAngle;
+  final double likeTagAngle;
 
   DraggableCard({
     this.card,
@@ -48,6 +50,8 @@ class DraggableCard extends StatefulWidget {
     this.leftSwipeThreshold = -0.45,
     this.rightSwipeThreshold = 0.45,
     this.topSwipeThreshold = -0.4,
+    this.nopeTagAngle = -12,
+    this.likeTagAngle = 12,
   });
 
   @override
@@ -351,19 +355,19 @@ class _DraggableCardState extends State<DraggableCard> with TickerProviderStateM
                     widget.card!,
                     if (widget.likeTag != null && slideRegion == SlideRegion.inLikeRegion)
                       Positioned(
-                        top: 40,
-                        left: 20,
+                        top: 0,
+                        left: 0,
                         child: Transform.rotate(
-                          angle: 12,
+                          angle: widget.likeTagAngle,
                           child: widget.likeTag,
                         ),
                       ),
                     if (widget.nopeTag != null && slideRegion == SlideRegion.inNopeRegion)
                       Positioned(
-                        top: 40,
-                        right: 20,
+                        top: 0,
+                        right: 0,
                         child: Transform.rotate(
-                          angle: -12,
+                          angle: widget.nopeTagAngle,
                           child: widget.nopeTag,
                         ),
                       ),

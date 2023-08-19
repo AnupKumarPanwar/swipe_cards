@@ -19,6 +19,8 @@ class SwipeCards extends StatefulWidget {
   final bool upSwipeAllowed;
   final bool leftSwipeAllowed;
   final bool rightSwipeAllowed;
+  final double nopeTagAngle;
+  final double likeTagAngle;
 
   /// Threshold for left swipe. The larger the number, the further the card needs to be dragged to activate the action. Must be less or equal to 0 to work correct.
   final double leftSwipeThreshold;
@@ -53,6 +55,8 @@ class SwipeCards extends StatefulWidget {
     this.topSwipeThreshold = -0.4,
     this.onSwipeChange,
     this.onSwipeFinish,
+    this.nopeTagAngle = -12,
+    this.likeTagAngle = 12,
   }) : super(key: key);
 
   @override
@@ -244,6 +248,8 @@ class _SwipeCardsState extends State<SwipeCards> {
             leftSwipeThreshold: widget.leftSwipeThreshold,
             rightSwipeThreshold: widget.rightSwipeThreshold,
             topSwipeThreshold: widget.topSwipeThreshold,
+            nopeTagAngle: widget.nopeTagAngle,
+            likeTagAngle: widget.likeTagAngle,
           )
       ],
     );

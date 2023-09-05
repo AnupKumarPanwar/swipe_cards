@@ -192,13 +192,16 @@ class _SwipeCardsState extends State<SwipeCards> {
         break;
     }
 
-    if (widget.matchEngine._nextItemIndex! < widget.matchEngine._swipeItems!.length) {
-      widget.itemChanged?.call(widget.matchEngine.nextItem!, widget.matchEngine._nextItemIndex!);
-    }
+    if (direction != null) {
+      if (widget.matchEngine._nextItemIndex! < widget.matchEngine._swipeItems!.length) {
+        widget.itemChanged?.call(widget.matchEngine.nextItem!, widget.matchEngine._nextItemIndex!);
+      }
+      widget.matchEngine.itemChanged?.call(widget.matchEngine.currentItem, widget.matchEngine._currentItemIndex);
 
-    widget.matchEngine.cycleMatch();
-    if (widget.matchEngine.currentItem == null) {
-      widget.onStackFinished();
+      widget.matchEngine.cycleMatch();
+      if (widget.matchEngine.currentItem == null) {
+        widget.onStackFinished();
+      }
     }
   }
 
@@ -262,9 +265,11 @@ class MatchEngine extends ChangeNotifier {
 
   int? _currentItemIndex;
   int? _nextItemIndex;
+  Function(SwipeItem?, int?)? itemChanged;
 
   MatchEngine({
     List<SwipeItem>? swipeItems,
+    this.itemChanged,
   }) : _swipeItems = swipeItems {
     _currentItemIndex = 0;
     _nextItemIndex = 1;
@@ -275,12 +280,12 @@ class MatchEngine extends ChangeNotifier {
   SwipeItem? get nextItem => _nextItemIndex! < _swipeItems!.length ? _swipeItems![_nextItemIndex!] : null;
 
   void cycleMatch() {
-    if (currentItem!.decision != Decision.undecided) {
-      currentItem!.resetMatch();
-      _currentItemIndex = _nextItemIndex;
-      _nextItemIndex = _nextItemIndex! + 1;
-      notifyListeners();
-    }
+    //if (currentItem!.decision != Decision.undecided) {
+    currentItem!.resetMatch();
+    _currentItemIndex = _nextItemIndex;
+    _nextItemIndex = _nextItemIndex! + 1;
+    notifyListeners();
+    //}
   }
 
   void rewindMatch() {

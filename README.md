@@ -44,6 +44,11 @@ SwipeCards(
 | `rightSwipeAllowed` |  To enable/disable right swipe. (Default: true)    |
 | `upSwipeAllowed`    |  To enable/disable up swipe. (Default: false)    |
 | `fillSpace`         |  Config weather to fill up the space or not. (Default: true)    |
+| `leftSwipeThreshold`|  Threshold for left swipe. The larger the number, the further the card needs to be dragged to activate the action. Must be less or equal to 0 to work correct. (Default: -0.45)    |
+| `rightSwipeThreshold`|  Threshold for right swipe. The larger the number, the further the card needs to be dragged to activate the action. Must be bigger or equal to 0 to work correct. (Default: 0.45)    |
+| `topSwipeThreshold`|  Threshold for top swipe. The larger the number, the further the card needs to be dragged to activate the action. (Default: -0.4)    |
+| `onSwipeChange`    |  Triggered when user dragging the card    |
+| `onSwipeFinish`    |  Triggered when user releases the card    |
 
 ### MatchEngine
 

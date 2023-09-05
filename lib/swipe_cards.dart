@@ -258,6 +258,8 @@ class _SwipeCardsState extends State<SwipeCards> {
 
 class MatchEngine extends ChangeNotifier {
   final List<SwipeItem>? _swipeItems;
+  List<SwipeItem>? get swipeItems => _swipeItems;
+
   int? _currentItemIndex;
   int? _nextItemIndex;
 
